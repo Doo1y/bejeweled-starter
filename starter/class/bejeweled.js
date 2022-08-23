@@ -1,14 +1,34 @@
 const Screen = require("./screen");
 const Cursor = require("./cursor");
 
+const emojiPedia = [
+  0x26BD,
+  0x1F94E,
+  0x1F3C0,
+  0x1F3D0,
+  0x1F3C8,
+  0x1F3BE,
+  0x1F3B1
+];
 class Bejeweled {
 
   constructor() {
 
-    this.playerTurn = "O";
+   this.playerTurn = "O";
 
     // Initialize this
-    this.grid = [];
+    this.grid = [
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',]
+    ];
+
+    this.emojiList = emojiPedia.map(unicode => String.fromCharCode(unicode));
 
     this.cursor = new Cursor(8, 8);
 
@@ -19,7 +39,7 @@ class Bejeweled {
     Screen.render();
   }
 
-  static checkForMatches(grid) {
+  static checkMatches(grid) {
 
     // Fill this in
 

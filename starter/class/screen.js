@@ -1,6 +1,18 @@
 const keypress = require('keypress');
 const Command = require('./command');
 
+const emojiPedia = [
+  0x26BD,
+  0x1F94E,
+  0x1F3C0,
+  0x1F3D0,
+  0x1F3C8,
+  0x1F3BE,
+  0x1F3B1
+];
+const emojiList = emojiPedia.map(unicode => String.fromCodePoint(unicode));
+const randomEmoticons = () => emojiList[Math.floor((Math.random() * (emojiList.length)))];
+
 class Screen {
 
   static numCols = 0;
@@ -26,6 +38,7 @@ class Screen {
 
   static initialized = false;
 
+
   static initialize(numRows, numCols) {
     Screen.numRows = numRows;
     Screen.numCols = numCols;
@@ -34,8 +47,13 @@ class Screen {
     Screen.textColors = [];
     Screen.backgroundColors = [];
 
-    for (let row = 0 ; row < numRows ; row++) {
-      Screen.grid.push(new Array(numCols).fill(" "));
+    for (let row = 0; row < numRows; row++) {
+      let row = new Array(numCols);
+      for (let i = 0; i < row.length; i++) {
+        row[i] = randomEmoticons();
+      }
+
+      Screen.grid.push(row);
       Screen.textColors.push(new Array(numCols).fill(Screen.defaultTextColor));
       Screen.backgroundColors.push(new Array(numCols).fill(Screen.defaultBackgroundColor));
     }
@@ -69,7 +87,7 @@ class Screen {
   static waitForInput() {
     keypress(process.stdin);
 
-    process.stdin.on('keypress', function (ch, key) {
+    process.stdin.on('keypress', function(ch, key) {
 
       if (!key) {
         console.log("Warning: Unknown keypress");
@@ -94,7 +112,7 @@ class Screen {
       throw new Error("invalid grid character");
     }
     Screen.grid[row][col] = char;
-  }
+  }u
 
 
   static addCommand(key, description, action) {
@@ -113,7 +131,7 @@ class Screen {
     Screen.quitMessage = quitMessage;
   }
 
-  static quit(showMessage=true) {
+  static quit(showMessage = true) {
     if (showMessage) console.log(Screen.quitMessage);
     process.exit(1);
   }
@@ -132,11 +150,11 @@ class Screen {
 
     console.log(horizontalBorder);
 
-    for (let row = 0 ; row < Screen.numRows ; row++) {
+    for (let row = 0; row < Screen.numRows; row++) {
 
       const rowCopy = [...Screen.grid[row]];
 
-      for (let col = 0 ; col < Screen.numCols ; col++) {
+      for (let col = 0; col < Screen.numCols; col++) {
 
         let textColor = Screen.textColors[row][col] ? Screen.textColors[row][col] : "";
         let backgroundColor = Screen.backgroundColors[row][col] ? Screen.backgroundColors[row][col] : "";
@@ -223,7 +241,7 @@ class Screen {
     Screen.message = msg;
   }
 
-  static setKeypressCallback (keypressCallback) {
+  static setKeypressCallback(keypressCallback) {
     Screen.keypressCallback = keypressCallback;
   }
 }
